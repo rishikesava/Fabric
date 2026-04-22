@@ -1,0 +1,139 @@
+{
+    "name": "FHIR_PL",
+    "objectId": "c7dbe631-5529-4b23-8ffa-32a1c71eeec3",
+    "properties": {
+        "activities": [
+            {
+                "name": "Notebook1",
+                "type": "TridentNotebook",
+                "dependsOn": [],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "typeProperties": {
+                    "notebookId": "a4b7e21d-f2be-4fd7-b9d0-542baf25d5aa",
+                    "workspaceId": "d30add64-2ca7-4d86-8edc-e6ef149b3064",
+                    "parameters": {
+                        "start_date": {
+                            "value": {
+                                "value": "@pipeline().parameters.start_date",
+                                "type": "Expression"
+                            },
+                            "type": "string"
+                        },
+                        "days_to_ingest": {
+                            "value": {
+                                "value": "@pipeline().parameters.days_to_ingest",
+                                "type": "Expression"
+                            },
+                            "type": "int"
+                        },
+                        "max_pages_per_day": {
+                            "value": {
+                                "value": "@pipeline().parameters.max_pages_per_day",
+                                "type": "Expression"
+                            },
+                            "type": "int"
+                        }
+                    }
+                }
+            },
+            {
+                "name": "Notebook2",
+                "type": "TridentNotebook",
+                "dependsOn": [
+                    {
+                        "activity": "Wait1",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "typeProperties": {
+                    "notebookId": "0d2bed8a-aa28-4a74-b54e-edbe209e97c4",
+                    "workspaceId": "d30add64-2ca7-4d86-8edc-e6ef149b3064"
+                }
+            },
+            {
+                "name": "Notebook3",
+                "type": "TridentNotebook",
+                "dependsOn": [
+                    {
+                        "activity": "Wait2",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "typeProperties": {
+                    "notebookId": "2e16fc3c-a4f4-4b5a-9227-2c569058d0ae",
+                    "workspaceId": "d30add64-2ca7-4d86-8edc-e6ef149b3064"
+                }
+            },
+            {
+                "name": "Wait1",
+                "type": "Wait",
+                "dependsOn": [
+                    {
+                        "activity": "Notebook1",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "typeProperties": {
+                    "waitTimeInSeconds": 30
+                }
+            },
+            {
+                "name": "Wait2",
+                "type": "Wait",
+                "dependsOn": [
+                    {
+                        "activity": "Notebook2",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "typeProperties": {
+                    "waitTimeInSeconds": 30
+                }
+            }
+        ],
+        "parameters": {
+            "start_date": {
+                "type": "string",
+                "defaultValue": "2026-04-01"
+            },
+            "days_to_ingest": {
+                "type": "int",
+                "defaultValue": 3
+            },
+            "max_pages_per_day": {
+                "type": "int",
+                "defaultValue": 10
+            }
+        },
+        "lastModifiedByObjectId": "93792306-29fd-4836-9329-3bb235cc18a9",
+        "lastPublishTime": "2026-04-08T09:11:45Z"
+    }
+}
