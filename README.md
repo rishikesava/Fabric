@@ -372,26 +372,7 @@ gold_fact_observation columns:
 gold_fact_condition columns:
 - condition_id, patient_id (FK), encounter_id (FK), condition_code, clinical_status, onsetDateTime, recordedDate
 
----
 
-## 🔍 Data Quality & Versioning
-
-### SCD Type 2 — How It Works
-
-Day 1 — Patient first ingested:
-{id: "p123", gender: "male", is_current: True, valid_from: "2026-04-20", valid_to: NULL}
-
-Day 5 — Gender changes in source system:
-Old row expires:
-{id: "p123", gender: "male", is_current: False, valid_from: "2026-04-20", valid_to: "2026-04-25"}
-New row inserted:
-{id: "p123", gender: "other", is_current: True, valid_from: "2026-04-25", valid_to: NULL}
-
-Change Detection Method:
-- MD5 hash computed from business columns (gender, birthDate, status, etc.)
-- Incoming hash compared to stored hash
-- If different → change detected → SCD Type 2 triggered
-- If same → no action (fully idempotent)
 
 ### Metadata Logging — pipeline_run_log
 
@@ -436,41 +417,12 @@ fhir-medallion-pipeline/
 ├── pipeline/
 │   └── PL_FHIR_Medallion.json        # Pipeline definition export
 │
-├── sql/
-│   ├── verify_tables.sql             # Table validation queries
-│   ├── sample_analytics.sql          # Example analytical queries
-│   └── scd2_verification.sql         # Check historical tracking
 │
 ├── README.md                          # This file
-├── LICENSE                            # MIT License
-└── .gitignore                         # Git ignore file
+
 
 ---
 
-## 🔮 Future Enhancements
-
-Immediate Next Steps:
-- Add XML ingestion as alternative to JSON format
-- Create Power BI report connected to Gold layer
-- Implement null handling and referential integrity checks
-- Add auto-detection of last load date for true incremental loads
-
-Advanced Features:
-- Support more FHIR resources (Medication, Procedure, AllergyIntolerance)
-- Implement real-time streaming ingestion via Event Hubs
-- Add data masking and anonymization for PII fields
-- Build machine learning feature store on Gold layer
-- Create dbt models for transformation layer
-- Add automated data quality testing (Great Expectations)
-- Implement CI/CD pipeline for notebook deployment
-
-Observability:
-- Integrate with Azure Monitor and Application Insights
-- Create alerting for pipeline failures via email/Teams
-- Build pipeline execution dashboard in Power BI
-- Add data lineage visualization
-
----
 
 ## ✅ Assignment Requirements Checklist
 
@@ -490,20 +442,17 @@ Observability:
 | Documentation | ✅ Complete | This README + inline code comments |
 | Git repository submission | ✅ Complete | All notebooks versioned |
 | XML ingestion (optional) | ⬜ Not implemented | Stretch goal |
-| Power BI report (optional) | ⬜ Not implemented | Stretch goal |
+| Power BI report (optional) |  ✅ Complete | Stretch goal |
 
 ---
 
 ## 👨‍💻 Author
 
-Your Name
+Rishi Kesavan
 Data Engineer — Microsoft Fabric | PySpark | Delta Lake
 
 ---
 
-## 📄 License
-
-This project is licensed under the MIT License. See LICENSE file for details.
 
 ---
 
