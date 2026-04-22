@@ -45,7 +45,7 @@ This project implements a complete end-to-end data pipeline that:
 
 ### Medallion Architecture Layers
 
-RAW & BRONZE LAYER
+BRONZE LAYER
 - Delta tables with raw ingested data + metadata
 - Tables: bronze_patient, bronze_encounter, bronze_observation, bronze_condition
 - Extra Columns: extraction_timestamp, load_date, api_base_url, api_params
